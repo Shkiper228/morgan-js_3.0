@@ -6,7 +6,7 @@ const messageCreate = {
         if(!message.guild || !message.guild.emojis.cache || message.author.bot) return;
 
         
-        if(chance(50)){
+        if(chance(5)){
             try {
                 const guildEmojis = await message.guild.emojis.fetch()
                 await message.react(guildEmojis.random())
