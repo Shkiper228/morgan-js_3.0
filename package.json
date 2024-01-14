@@ -1,0 +1,28 @@
+{
+  "name": "morgan-js-3.0",
+  "version": "1.0.0",
+  "description": "Морган третьої ревізії",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shkiper228/morgan-js_2.0.git"
+  },
+  "keywords": [
+    "bot",
+    "discord"
+  ],
+  "author": "vovamyrosh2003@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shkiper228/morgan-js_2.0/issues"
+  },
+  "homepage": "https://github.com/Shkiper228/morgan-js_2.0#readme",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "discord.js": "^14.14.1",
+    "mysql": "^2.18.1"
+  }
+}
