@@ -1,4 +1,4 @@
-const { ChannelType } = require("discord.js");
+const { ChannelType, PermissionFlagsBits } = require("discord.js");
 
 class PrivatChannel {
     constructor (client, owner) {
@@ -14,8 +14,8 @@ class PrivatChannel {
             userLimit: 2,
             permissionOverwrites: [
                 {
-                    id: this.owner.user.id,
-                    allow: 'MANAGE_CHANNELS'
+                    id: this.ownerId,
+                    allow: PermissionFlagsBits.ManageChannels
                 }
             ]
         })
