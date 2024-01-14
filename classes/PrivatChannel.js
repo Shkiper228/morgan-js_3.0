@@ -1,4 +1,4 @@
-const { Invite } = require("discord.js");
+const { ChannelType } = require("discord.js");
 
 class PrivatChannel {
     constructor (client, owner) {
@@ -7,10 +7,10 @@ class PrivatChannel {
     }
 
     async init () {
-        this.owner = await this.client.guild.members.fetch(this.client.guild.ownerId);
-        this.channel = await this.client.guild.channels.create(`🔒 ${this.owner.user.tag}`, {
-            type: 'GUILD_VOICE',
-            parent: this.owner.voice.channel.parent,
+        this.owner = await this.client.guild.members.fetch(this.ownerId);
+        this.channel = await this.client.guild.channels.create({
+            name: `🔒 ${this.owner.nickname}`,
+            type: ChannelType.GuildVoice,
             userLimit: 2,
             permissionOverwrites: [
                 {
