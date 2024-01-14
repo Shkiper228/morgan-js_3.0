@@ -80,7 +80,7 @@ class Morgan extends Discord.Client {
 			if(error) {console.error(error); return}
 			if(!rows) return
 			rows.forEach(async e => {
-				//console.log(e)
+				console.log(e)
 				this[e.type] = await this.guild.channels.fetch(e.id)
 			})
 		})

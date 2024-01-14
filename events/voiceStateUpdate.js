@@ -9,7 +9,7 @@ const voiceStateUpdate = {
             client.privat_voices.push(channel);
         }
     
-        /*client.privat_voices.forEach(async (voice, index) => {
+        client.privat_voices.forEach(async (voice, index) => {
             if(oldState.channelId == voice.channel.id && oldState.channel.members.size == 0) {
                 try {
                     client.connection.query(`DELETE FROM privat_channels WHERE id=${voice.channel.id}`)
@@ -20,7 +20,7 @@ const voiceStateUpdate = {
                 }
                 
             }
-        });*/
+        });
     }
 }
 
