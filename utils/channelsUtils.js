@@ -40,7 +40,7 @@ async function groundChannel (client, name, data = {}, primary = true) {
         })
 
         
-        console.log(data)
+        //console.log(data)
         if(channel){
             await channel.edit(data)
             return channel;

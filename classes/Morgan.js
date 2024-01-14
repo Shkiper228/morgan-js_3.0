@@ -80,7 +80,7 @@ class Morgan extends Discord.Client {
 			if(error) {console.error(error); return}
 			if(!rows) return
 			rows.forEach(async e => {
-				console.log(e)
+				//console.log(e)
 				this[e.type] = await this.guild.channels.fetch(e.id)
 			})
 		})
@@ -186,7 +186,7 @@ class Morgan extends Discord.Client {
 		const channels = this.guild.channels.cache;
 		const infoBooksPath = path.join(__dirname, '../books/infoBooks')
 
-		console.log(`map_channel --> ${this.map_channel}`)
+		//console.log(`map_channel --> ${this.map_channel}`)
 
 		fs.readdirSync(infoBooksPath).forEach(folder => {
 			const book = new InfoBook({
@@ -395,7 +395,7 @@ class Morgan extends Discord.Client {
 
 		this.connection.query('SELECT * FROM privat_channels', (err, rows) => {
 			if(rows && rows[0]) {
-				console.log(rows);
+				//console.log(rows);
 				rows.forEach(async (channel) => {
 					try {
 						const voice = await this.guild.channels.fetch(channel.id)

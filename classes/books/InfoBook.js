@@ -79,7 +79,7 @@ class InfoBook extends Book {
                 const embed = new MessageEmbed({
                     title: 'Інформація',
                 })
-                console.log(this.pages[pageNumber])
+                //console.log(this.pages[pageNumber])
                 let str = '';
                 this.pages[pageNumber].forEach(page => {
                     str += '\n';
