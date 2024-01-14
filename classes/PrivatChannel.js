@@ -9,7 +9,7 @@ class PrivatChannel {
     async init () {
         this.owner = await this.client.guild.members.fetch(this.ownerId);
         this.channel = await this.client.guild.channels.create({
-            name: `🔒 ${this.owner.nickname}`,
+            name: `🔒 ${this.owner.displayName}`,
             type: ChannelType.GuildVoice,
             userLimit: 2,
             permissionOverwrites: [
