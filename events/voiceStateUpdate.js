@@ -1,8 +1,10 @@
 const { Events } = require('discord.js');
+const PrivatChannel = require('../classes/PrivatChannel.js');
 
 const voiceStateUpdate = {
     name: Events.VoiceStateUpdate,
     execute: async (client, oldState, newState) => {
+        console.log(client.GuildPrivateVoiceCreation)
         if(newState.channelId == client.GuildPrivateVoiceCreation.id) {
             const channel = new PrivatChannel(client, newState.member.user.id);
             await channel.init();
