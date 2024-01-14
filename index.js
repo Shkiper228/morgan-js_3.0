@@ -29,7 +29,3 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 	}
 }) 
-
-
-
-client.login('OTY4MTk0OTY5MDExNjE3ODQy.G1WcF5.iD9mlfdkpRcq7uyevWBJslRQqL9IlkZKG6x_uQ');
