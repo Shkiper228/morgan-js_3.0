@@ -7,4 +7,4 @@ git branch -M master
 
 git push -u origin master
 
-TIMEOUT /T 99
+TIMEOUT /T 19

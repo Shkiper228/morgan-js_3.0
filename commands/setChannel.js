@@ -23,7 +23,7 @@ module.exports = {
             subcommand
                 .setName('privatevoices')
                 .setDescription('Голосовий канал для створення приватних голосових каналів')
-                .addStringOption(option => option.setName('privatevoicesid').setDescription('Оберіть канал')))
+                .addStringOption(option => option.setName('privatevoicesid').setDescription('Введіть \`id\` каналу')))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(client, interaction) {
         const subCmd = interaction.options.getSubcommand()
@@ -156,19 +156,5 @@ module.exports = {
                 })
                 break;
         }
-        
-
-
-        /*client.connection.query('SELECT * FROM keyСhannels WHERE type = \"GuildUsers\"', async (error, rows) => {
-            if(error) interaction.reply({content: `Помилка запиту бази даних: ${error}`, ephemeral: true })
-            console.log(rows)
-            console.log(rows.length)
-            if(rows.length == 0){
-                client.connection.query(`INSERT INTO keyСhannels (id, type) VALUES (${channel.id}, \"GuildUsers\")`)
-            }
-            
-            await interaction.reply('ok')
-        })*/
-        
     }
 }
