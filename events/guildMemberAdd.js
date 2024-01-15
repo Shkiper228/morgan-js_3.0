@@ -22,7 +22,7 @@ const guildMemberAdd = {
         client.connection.query(`SELECT 1 FROM member WHERE id = ${member.id}`, (err, rows) => {
             if(rows && !rows[0] && !member.user.bot) {
                 client.connection.query(`INSERT INTO members (id) VALUES(${member.id})`, err => {
-                    if(err) log(err, 'error')
+                    if(err) console.error(err)
                 })
             }
         })

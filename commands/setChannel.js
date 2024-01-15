@@ -21,6 +21,11 @@ module.exports = {
                 .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
         .addSubcommand(subcommand => 
             subcommand
+                .setName('info')
+                .setDescription('Інформаційний канал')
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+        .addSubcommand(subcommand => 
+            subcommand
                 .setName('privatevoices')
                 .setDescription('Голосовий канал для створення приватних голосових каналів')
                 .addStringOption(option => option.setName('privatevoicesid').setDescription('Введіть \`id\` каналу')))
