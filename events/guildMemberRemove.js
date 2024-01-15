@@ -20,7 +20,7 @@ const guildMemberRemove = {
                 color: 0xaa0000
             }]});
         } else {
-            client.send({embeds: [{
+            client.owner.send({embeds: [{
                 description: `**На сервер доєднався новий учасник, але на сервері не визначено каналу для відображення входу/виходу користувачів\nАби це виправити скористайтесь командою \`/setchannel users\`**`,
                 color: 0xFF033E
             }]})

@@ -12,7 +12,7 @@ const guildMemberAdd = {
         if(client.GuildUsers) {
             await client.GuildUsers.send({embeds: [embed]});
         } else {
-            client.send({embeds: [{
+            client.owner.send({embeds: [{
                 description: `**На сервер доєднався новий учасник, але на сервері не визначено каналу для відображення входу/виходу користувачів\nАби це виправити скористайтесь командою \`/setchannel users\`**`,
                 color: 0xFF033E
             }]})

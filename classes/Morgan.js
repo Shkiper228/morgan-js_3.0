@@ -37,7 +37,7 @@ class Morgan extends Discord.Client {
     async init() {
 		this.guild = await this.guilds.fetch(this.config.guild);
 		console.log(`Кількість емодзі: ${this.guild.emojis.cache.size}`)
-		this.owner = await this.guild.members.fetch(this.config.owner);
+		this.owner = await this.guild.members.fetch(this.guild.ownerId);
 		
 		await this.dbConnection();
 		
@@ -80,7 +80,6 @@ class Morgan extends Discord.Client {
 			if(error) {console.error(error); return}
 			if(!rows) return
 			rows.forEach(async e => {
-				console.log(e)
 				this[e.type] = await this.guild.channels.fetch(e.id)
 			})
 		})

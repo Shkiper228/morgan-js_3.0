@@ -26,6 +26,11 @@ module.exports = {
                 .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
         .addSubcommand(subcommand => 
             subcommand
+                .setName('general')
+                .setDescription('Загальний текстовий канал')
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+        .addSubcommand(subcommand => 
+            subcommand
                 .setName('privatevoices')
                 .setDescription('Голосовий канал для створення приватних голосових каналів')
                 .addStringOption(option => option.setName('privatevoicesid').setDescription('Введіть \`id\` каналу')))
@@ -99,6 +104,34 @@ module.exports = {
                     }
 
                     client.connection.query(`INSERT INTO key_channels VALUES (${channel.id}, \"GuildInfo\")`, (error, rows) => {
+                        if (error) {
+                            interaction.reply({embeds: [{
+                                description: `**Халепа, щось пішло не так. Помилка:**\n${error}`,
+                                color: 0xFF033E
+                            }], ephemeral: true})
+                            return
+                        } else {
+                            interaction.reply({embeds: [{
+                                description: `Канал під назвою \`${channel.name}\` було успішно встановлено як канал з загальною інформацією`,
+                                color: 0x84DE02
+                            }], ephemeral: true})
+                        }
+                    })
+                })
+                break;
+
+            case 'general':
+                client.GuildGeneral = channel
+                client.connection.query('DELETE FROM key_channels WHERE type = \"GuildGeneral\"', async (error, rows) => {
+                    if(error) {
+                        interaction.reply({embeds: [{
+                            description: `**Халепа, щось пішло не так. Помилка:**\n${error}`,
+                            color: 0xFF033E
+                        }], ephemeral: true})
+                        return
+                    }
+
+                    client.connection.query(`INSERT INTO key_channels VALUES (${channel.id}, \"GuildGeneral\")`, (error, rows) => {
                         if (error) {
                             interaction.reply({embeds: [{
                                 description: `**Халепа, щось пішло не так. Помилка:**\n${error}`,

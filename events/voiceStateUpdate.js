@@ -4,7 +4,11 @@ const PrivatChannel = require('../classes/PrivatChannel.js');
 const voiceStateUpdate = {
     name: Events.VoiceStateUpdate,
     execute: async (client, oldState, newState) => {
-        console.log(client.GuildPrivateVoiceCreation)
+        if(!client.GuildPrivateVoiceCreation) {
+            console.warn('На сервері не встановлено голосового каналу, що відповідає за створення приватних голосових каналів')
+            return
+        }
+        
         if(newState.channelId == client.GuildPrivateVoiceCreation.id) {
             const channel = new PrivatChannel(client, newState.member.user.id);
             await channel.init();
@@ -20,7 +24,6 @@ const voiceStateUpdate = {
                 } catch (error) {
                     
                 }
-                
             }
         });
     }
