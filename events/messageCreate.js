@@ -124,6 +124,8 @@ const messageCreate = {
 
         await random_arithmetic_expression(client, message)
 
+        await arithmeticExpressionsCheck(client, message, member)
+
     }
 }
 
