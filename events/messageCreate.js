@@ -118,7 +118,7 @@ const messageCreate = {
 
         await bump_check(client, message)
 
-        await updateXP(client, message, memeber)
+        await updateXP(client, message, member)
 
         await random_emojis(client, message)
 
