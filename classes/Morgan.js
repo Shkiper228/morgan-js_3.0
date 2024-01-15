@@ -130,9 +130,6 @@ class Morgan extends Discord.Client {
 		autoRole_book.start();*/
 		//await begin_message.reactions.removeAll();
 		//await begin_message.react('✅');
-
-		//creatende privat voice
-		//this.creatende_privat_voice = await groundChannel(this, '┆➕ створити войс', {type: ChannelType.GuildVoiceStates})
 	}
 
     async loadCommands() {

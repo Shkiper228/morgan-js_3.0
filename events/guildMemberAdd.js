@@ -4,13 +4,17 @@ const {MessageEmbed} = require('discord.js');
 const guildMemberAdd = {
     name: Events.GuildMemberAdd,
     execute: async (client, member) => {
-        const embed = new MessageEmbed()
+        /*const embed = new MessageEmbed()
         .setImage(member.displayAvatarURL())
         .setDescription(`Ласкаво просимо на сервері, ${member}! Новачок під іменем ${member.user.tag} уже ${member.guild.memberCount}-й\n`)
-        .setColor(0x00aa00)
+        .setColor(0x00aa00)*/
     
         if(client.GuildUsers) {
-            await client.GuildUsers.send({embeds: [embed]});
+            await client.GuildUsers.send({embeds: [{
+                description: `Ласкаво просимо на сервері, ${member}! Новачок під іменем ${member.user.tag} уже ${member.guild.memberCount}-й\n`,
+                color: 0x00aa00,
+                image: member.displayAvatarURL()
+            }]});
         } else {
             client.owner.send({embeds: [{
                 description: `**На сервер доєднався новий учасник, але на сервері не визначено каналу для відображення входу/виходу користувачів\nАби це виправити скористайтесь командою \`/setchannel users\`**`,
