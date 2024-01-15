@@ -13,7 +13,9 @@ const guildMemberAdd = {
             await client.GuildUsers.send({embeds: [{
                 description: `Ласкаво просимо на сервері, ${member}! Новачок під іменем ${member.user.tag} уже ${member.guild.memberCount}-й\n`,
                 color: 0x00aa00,
-                image: member.displayAvatarURL()
+                image: {
+                    url: member.displayAvatarURL()
+                }
             }]});
         } else {
             client.owner.send({embeds: [{
