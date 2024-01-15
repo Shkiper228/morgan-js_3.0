@@ -45,6 +45,32 @@ async function bump_check(client, message) {
     }
 }
 
+async function updateXP(client, message, member) {
+    client.connection.query(`SELECT * FROM members WHERE id = ${message.author.id}`, async (error, rows) => {
+        if(rows[0]) {
+            let expForNextLvl = 0;
+            for(let i = 1; i < rows[0].level + 1; i++){
+                expForNextLvl += (5 * Math.pow(i, 2)) + (50 * i) + 100;
+            }
+            const exp = rows[0].experience;
+            if(exp >= expForNextLvl) {
+                rows[0].level++;
+                const console = await client.guild.channels.fetch('704660113750884433');
+                await console.send({
+                    content: `${member}`,
+                    embeds: [{
+                        description: `Ви досягнули ${rows[0].level} рівень! Вітаєм!`,
+                        color: 0x2D7144
+                    }]
+                })
+            };
+            client.connection.query(`UPDATE members SET experience = ${exp + Math.floor(Math.random() * 10) + 15}, 
+            level = ${rows[0].level}, messages = ${rows[0].messages + 1} WHERE id = ${message.author.id}`)
+        }
+    })
+    
+}
+
 async function random_emojis (client, message) {
     if(!message.guild.emojis.cache) {
         console.warn('На сервері немає жодного власного емодзі')
@@ -69,12 +95,30 @@ async function random_arithmetic_expression (client, message) {
     }
 }
 
+async function arithmeticExpressionsCheck(client, message, member) {
+    if(client.arithmeticExpression){ 
+        if(message.content.split('').filter(e => e.trim().length).join('') == client.arithmeticExpression.answer.toString()) {
+            client.arithmeticExpression.isResolved = true
+            message.channel.send({embeds: [{
+                description: `${member} перший відповів(-ла) правильно! За це він(вона) отримає \`100\` досвіду!`,
+                color: 0x00ff00
+            }]})
+            client.connection.query(`UPDATE members SET experience = experience + 100 WHERE id = ${message.author.id}`)
+            client.arithmeticExpression = undefined
+        }
+    }
+}
+
 const messageCreate = {
     name: Events.MessageCreate,
     execute: async (client, message) => {
         if(message.author.bot || !message.guild) return
 
+        const member = await client.guild.members.fetch(message.author.id)
+
         await bump_check(client, message)
+
+        await updateXP(client, message, memeber)
 
         await random_emojis(client, message)
 
@@ -82,7 +126,5 @@ const messageCreate = {
 
     }
 }
-
-
 
 module.exports = messageCreate;
