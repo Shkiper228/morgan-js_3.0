@@ -9,9 +9,17 @@ const guildMemberAdd = {
         .setDescription(`Ласкаво просимо на сервері, ${member}! Новачок під іменем ${member.user.tag} уже ${member.guild.memberCount}-й\n`)
         .setColor(0x00aa00)
     
-        await client.GuildUsers.send({embeds: [embed]});
+        if(client.GuildUsers) {
+            await client.GuildUsers.send({embeds: [embed]});
+        } else {
+            client.send({embeds: [{
+                description: `**На сервер доєднався новий учасник, але на сервері не визначено каналу для відображення входу/виходу користувачів\nАби це виправити скористайтесь командою \`/setchannel users\`**`,
+                color: 0xFF033E
+            }]})
+        }
+        
     
-        /*client.connection.query(`SELECT 1 FROM member WHERE id = ${member.id}`, (err, rows) => {
+        client.connection.query(`SELECT 1 FROM member WHERE id = ${member.id}`, (err, rows) => {
             if(rows && !rows[0] && !member.user.bot) {
                 client.connection.query(`INSERT INTO members (id) VALUES(${member.id})`, err => {
                     if(err) log(err, 'error')

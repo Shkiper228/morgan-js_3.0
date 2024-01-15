@@ -14,10 +14,18 @@ function formatCurrentTime() {
 const guildMemberRemove = {
     name: Events.GuildMemberRemove,
     execute: async (client, member) => {
-        client.GuildUsers.send({embeds: [{
-            description: `${member} під іменем ${member.user.tag} покинув сервер о ${formatCurrentTime()}\n`,
-            color: 0xaa0000
-        }]});
+        if(client.GuildUsers){
+            client.GuildUsers.send({embeds: [{
+                description: `${member} під іменем ${member.user.tag} покинув сервер о ${formatCurrentTime()}\n`,
+                color: 0xaa0000
+            }]});
+        } else {
+            client.send({embeds: [{
+                description: `**На сервер доєднався новий учасник, але на сервері не визначено каналу для відображення входу/виходу користувачів\nАби це виправити скористайтесь командою \`/setchannel users\`**`,
+                color: 0xFF033E
+            }]})
+        }
+        
     }
 }
 

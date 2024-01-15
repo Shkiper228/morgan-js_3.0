@@ -12,6 +12,7 @@ class PrivatChannel {
             name: `🔒 ${this.owner.displayName}`,
             type: ChannelType.GuildVoice,
             userLimit: 2,
+            parent: this.client.GuildPrivateVoiceCreation.parent,
             permissionOverwrites: [
                 {
                     id: this.ownerId,
