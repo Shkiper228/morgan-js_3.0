@@ -183,7 +183,7 @@ class Morgan extends Discord.Client {
     async loadInfoBooks () {
 		this.infoBooks = [];
 		const channels = this.guild.channels.cache;
-		const infoBooksPath = path.join(__dirname, '../books/infoBooks')
+		const infoBooksPath = path.join(__dirname, '../infoBooks')
 
 		//console.log(`map_channel --> ${this.map_channel}`)
 
