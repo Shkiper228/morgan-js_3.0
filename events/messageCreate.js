@@ -74,6 +74,8 @@ const messageCreate = {
     execute: async (client, message) => {
         if(message.author.bot || !message.guild) return
 
+        await bump_check(client, message)
+
         await random_emojis(client, message)
 
         await random_arithmetic_expression(client, message)
