@@ -97,7 +97,8 @@ async function random_arithmetic_expression (client, message) {
 
 async function arithmeticExpressionsCheck(client, message, member) {
     if(client.arithmeticExpression){ 
-        console.log(client.arithmeticExpression)
+        console.log(message.content.split('').filter(e => e.trim().length).join(''))
+        console.log(client.arithmeticExpression.answer.toString())
         if(message.content.split('').filter(e => e.trim().length).join('') == client.arithmeticExpression.answer.toString()) {
             client.arithmeticExpression.isResolved = true
             message.channel.send({embeds: [{
