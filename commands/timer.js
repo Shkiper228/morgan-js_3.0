@@ -5,9 +5,9 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('timer')
         .setDescription('Генерує новий таймер')
-        .addIntegerOption(option => option.setName('int').setDescription('Час таймеру(хв)')),
+        .addIntegerOption(option => option.setName('час').setDescription('Час таймеру(хв)')),
     async execute(client, interaction) {
-        const time = interaction.options.getInteger('int')
+        const time = interaction.options.getInteger('час')
 
         if(time >= (Math.pow(2, 31) - 1) / 60000) {
             interaction.reply({embeds: [{
@@ -16,11 +16,11 @@ module.exports = {
             }], ephemeral: true})
             return;
         }
-        const timer = new Timer(client, time, message.channel.id, 'Таймер', `Твій таймер на ${time} хвилин спрацював`, `${message.author}`, 0x553344);
+        const timer = new Timer(client, time, interaction.message.channel.id, 'Таймер', `Твій таймер на ${time} хвилин спрацював`, `${interaction.message.author}`, 0x553344);
     
         await message.channel.send({
             embeds: [{
-                description: `${message.author} твій таймер на ${time} хвилин запущено\nВін спрацює о: \`${timer.formedDateTime}\``
+                description: `${interaction.message.author} твій таймер на ${time} хвилин запущено\nВін спрацює о: \`${timer.formedDateTime}\``
             }]
         })
     }

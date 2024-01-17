@@ -115,11 +115,11 @@ async function arithmeticExpressionsCheck(client, message, member) {
 const messageCreate = {
     name: Events.MessageCreate,
     execute: async (client, message) => {
+        await bump_check(client, message)
+
         if(message.author.bot || !message.guild) return
 
         const member = await client.guild.members.fetch(message.author.id)
-
-        await bump_check(client, message)
 
         await updateXP(client, message, member)
 

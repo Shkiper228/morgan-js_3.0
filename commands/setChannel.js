@@ -6,12 +6,12 @@ module.exports = {
         .setDescription('Установить ключовий канал')
         .addSubcommand(subcommand => 
             subcommand
-                .setName('rules')
+                .setName('правила')
                 .setDescription('Канал правил')
                 .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
         .addSubcommand(subcommand => 
             subcommand
-                .setName('announcement')
+                .setName('оголошення')
                 .setDescription('Канал оголошень')
                 .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
         .addSubcommand(subcommand => 
@@ -40,7 +40,7 @@ module.exports = {
         const channel = interaction.options.getChannel('channel')
         const privatChannelId = interaction.options.getString('privatevoicesid')
         switch (subCmd) {
-            case 'rules':
+            case 'правила':
                 interaction.guild.setRulesChannel(channel)
                     .then(updated => interaction.reply({embeds: [{
                         description: `Канал під назвою \`${channel.name}\` було успішно встановлено як канал із правилами`,
@@ -52,7 +52,7 @@ module.exports = {
                     }], ephemeral: true}));
                 break;
             
-            case 'announcement':
+            case 'оголошення':
                 channel.setType(ChannelType.GuildAnnouncement)
                     .then(updated => interaction.reply({embeds: [{
                         description: `Канал під назвою \`${channel.name}\` було успішно встановлено як канал оголошень`,
