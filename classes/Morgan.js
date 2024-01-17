@@ -56,7 +56,7 @@ class Morgan extends Discord.Client {
         await this.slashCommands_reload()
 		//await this.loadInfoBooks();
 		
-		await this.regTimers();
+		//await this.regTimers();
 		//await this.regChannels();
 
 		//key channels table init

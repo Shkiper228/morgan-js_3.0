@@ -100,7 +100,7 @@ class Timer {
             this.formedDateTime = `${year}.${month < 10 ? '0' + month: month}.${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}:${second < 10 ? '0' + second : second}`;
 
 
-            const sql = `INSERT INTO timers (date_time, channel, title, description, sender, color) VALUES(\"${this.formedDateTime}\", \"${this.channelId}\", \"${this.title}\", \"${this.description}\", \"${this.sender}\", \"${this.color}\")`;
+            const sql = `INSERT INTO timers (date_time, channel, title, description, sender, color) VALUES(\"${this.formedDateTime}\", \"${this.channelId}\", \"${this.title}\", \"${this.description}\", \"${this.sender}\", ${this.color})`;
             this.client.connection.query(sql, (error, rows, fields) => {
                 console.log(rows)
                 if(error) {
