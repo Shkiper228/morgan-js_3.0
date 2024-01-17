@@ -56,7 +56,7 @@ class Timer {
             title VARCHAR(255),
             description VARCHAR(255) ,
             sender VARCHAR(23) ,
-            color VARCHAR(6) ,
+            color INT(12) ,
 			PRIMARY KEY (id)
 			)`
 		)
@@ -102,6 +102,7 @@ class Timer {
 
             const sql = `INSERT INTO timers (date_time, channel, title, description, sender, color) VALUES(\"${this.formedDateTime}\", \"${this.channelId}\", \"${this.title}\", \"${this.description}\", \"${this.sender}\", \"${this.color}\")`;
             this.client.connection.query(sql, (error, rows, fields) => {
+                console.log(rows)
                 if(error) {
                     console.log(`Трапилась помилка під час запису таймеру до бази даних: \n${error}`, 'error');
                 }
