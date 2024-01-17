@@ -11,16 +11,16 @@ module.exports = {
 
         if(time >= (Math.pow(2, 31) - 1) / 60000) {
             interaction.reply({embeds: [{
-                description: `${message.author} введіть менше число. Максимальна кількість хвилин для таймеру - ${Math.floor((Math.pow(2, 31) - 2) / 60000)}`,
+                description: `${interaction.member.author} введіть менше число. Максимальна кількість хвилин для таймеру - ${Math.floor((Math.pow(2, 31) - 2) / 60000)}`,
                 color: 0xFF033E
             }], ephemeral: true})
             return;
         }
-        const timer = new Timer(client, time, interaction.message.channel.id, 'Таймер', `Твій таймер на ${time} хвилин спрацював`, `${interaction.message.author}`, 0x553344);
+        const timer = new Timer(client, time, interaction.channel.id, 'Таймер', `Твій таймер на ${time} хвилин спрацював`, `${interaction.member.author}`, 0x553344);
     
-        await message.channel.send({
+        await interaction.reply({
             embeds: [{
-                description: `${interaction.message.author} твій таймер на ${time} хвилин запущено\nВін спрацює о: \`${timer.formedDateTime}\``
+                description: `${interaction.member.author} твій таймер на ${time} хвилин запущено\nВін спрацює о: \`${timer.formedDateTime}\``
             }]
         })
     }
