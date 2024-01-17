@@ -56,7 +56,7 @@ class Morgan extends Discord.Client {
         await this.slashCommands_reload()
 		//await this.loadInfoBooks();
 		
-		//await this.regTimers();
+		await this.regTimers();
 		//await this.regChannels();
 
 		//key channels table init
@@ -182,7 +182,6 @@ class Morgan extends Discord.Client {
 		const channels = this.guild.channels.cache;
 		const infoBooksPath = path.join(__dirname, '../infoBooks')
 
-		//console.log(`map_channel --> ${this.map_channel}`)
 
 		fs.readdirSync(infoBooksPath).forEach(folder => {
 			const book = new InfoBook({
@@ -278,7 +277,7 @@ class Morgan extends Discord.Client {
 		})
 	}
 	
-	/*async regTimers () {
+	async regTimers () {
 		function getTimeOfDaysMonthYears(days, currentM, month, currentY, year) {
 			let time = days * 24 * 60 * 60;
 			const x = [
@@ -379,7 +378,7 @@ class Morgan extends Discord.Client {
 				new Timer(this, time, timer.channel, timer.title, timer.description, timer.sender, timer.color, timer.id, true);
 			})
 		})
-	}*/
+	}
 
 	async regChannels () {
 		this.connection.query(`CREATE TABLE IF NOT EXISTS privat_channels ( 
