@@ -31,9 +31,9 @@ function getDaysMonthYears(days, month, year) {
 }
 
 class Timer {
-    constructor(client, time, channelId, title, description, sender, color, id = -1, isReg = false, func = () => {}) {
+    constructor(client, {time, channelId, title, description, sender, color, id = -1, isReg = false, func = () => {}}) {
         this.client = client;
-        this.time = Number(time); //хвилин
+        this.time = time; //хвилин
         this.channelId = channelId;
         this.title = title;
         this.description = description;
@@ -47,11 +47,9 @@ class Timer {
     }
 
     async init () {
-        
-
         this.client.connection.query(`CREATE TABLE IF NOT EXISTS timers ( 
 			id INT NOT NULL AUTO_INCREMENT ,
-			date_time VARCHAR(19) NOT NULL ,
+			timestamp VARCHAR(19) NOT NULL ,
             channel VARCHAR(20) NOT NULL ,
             title VARCHAR(255),
             description VARCHAR(255) ,
@@ -60,13 +58,17 @@ class Timer {
 			PRIMARY KEY (id)
 			)`
 		)
-        
-        
-
-        let amountMin = this.time
 
         if(!this.isReg) {
-            amountMin = this.time * 60
+            this.currentTimeStamp = Date.now()
+            this.targetTimeStamp = this.currentTimeStamp + this.time * 60 * 1000
+            this.targetDateTimeStr = new Date(this.targetTimeStamp).toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })
+
+            console.log(`Таймстемп на даний момент --> ${this.currentTimeStamp}`)
+            console.log(`Таймстемп таймеру --> ${this.targetTimeStamp}`)
+            console.log(`Таймер спрацює: ${this.targetDateTimeStr}`)
+            
+/*
             //формування кінцевого часу таймеру
             const dateTimeStr = new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })
 
@@ -98,15 +100,17 @@ class Timer {
 
 
             this.formedDateTime = `${year}.${month < 10 ? '0' + month: month}.${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}:${second < 10 ? '0' + second : second}`;
+*/
 
-
-            const sql = `INSERT INTO timers (date_time, channel, title, description, sender, color) VALUES(\"${this.formedDateTime}\", \"${this.channelId}\", \"${this.title}\", \"${this.description}\", \"${this.sender}\", ${this.color})`;
+            const sql = `INSERT INTO timers (timestamp, channel, title, description, sender, color) VALUES(\"${this.targetTimeStamp}\", \"${this.channelId}\", \"${this.title}\", \"${this.description}\", \"${this.sender}\", ${this.color})`;
             this.client.connection.query(sql, (error, rows, fields) => {
-                console.log(rows)
                 if(error) {
                     console.log(`Трапилась помилка під час запису таймеру до бази даних: \n${error}`, 'error');
+                } else {
+                    this.id = rows.insertId;
                 }
-                this.id = rows.insertId;
+
+                
             })
         } else {
             amountMin = this.time
@@ -122,7 +126,7 @@ class Timer {
                 }]})
             this.func()
             this.remove();
-        }, amountMin * 1000)
+        }, this.time * 60 * 1000)
 
 
     }

@@ -8,32 +8,32 @@ module.exports = {
             subcommand
                 .setName('правила')
                 .setDescription('Канал правил')
-                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал').setRequired(true)))
         .addSubcommand(subcommand => 
             subcommand
                 .setName('оголошення')
                 .setDescription('Канал оголошень')
-                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал').setRequired(true)))
         .addSubcommand(subcommand => 
             subcommand
                 .setName('users')
                 .setDescription('Канал користувачів')
-                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал').setRequired(true)))
         .addSubcommand(subcommand => 
             subcommand
                 .setName('info')
                 .setDescription('Інформаційний канал')
-                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал').setRequired(true)))
         .addSubcommand(subcommand => 
             subcommand
                 .setName('general')
                 .setDescription('Загальний текстовий канал')
-                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал')))
+                .addChannelOption(option => option.setName('channel').setDescription('Оберіть канал').setRequired(true)))
         .addSubcommand(subcommand => 
             subcommand
                 .setName('privatevoices')
                 .setDescription('Голосовий канал для створення приватних голосових каналів')
-                .addStringOption(option => option.setName('privatevoicesid').setDescription('Введіть \`id\` каналу')))
+                .addStringOption(option => option.setName('privatevoicesid').setDescription('Введіть \`id\` каналу').setRequired(true)))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(client, interaction) {
         const subCmd = interaction.options.getSubcommand()

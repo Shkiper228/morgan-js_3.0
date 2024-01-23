@@ -277,7 +277,7 @@ class Morgan extends Discord.Client {
 		})
 	}
 	
-	async regTimers () {
+	/*async regTimers () {
 		function getTimeOfDaysMonthYears(days, currentM, month, currentY, year) {
 			let time = days * 24 * 60 * 60;
 			const x = [
@@ -378,7 +378,7 @@ class Morgan extends Discord.Client {
 				new Timer(this, time, timer.channel, timer.title, timer.description, timer.sender, timer.color, timer.id, true);
 			})
 		})
-	}
+	}*/
 
 	async regChannels () {
 		this.connection.query(`CREATE TABLE IF NOT EXISTS privat_channels ( 
