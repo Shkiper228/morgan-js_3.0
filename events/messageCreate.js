@@ -7,7 +7,7 @@ const chance = percentage =>  {return percentage >= Math.random()*100 ? true : f
 async function bump_check(client, message) {
     if(message.embeds[0]) console.log(message.embeds[0])
     
-    if(message.author.id === '315926021457051650' && message.embeds[0] && message.embeds[0].description.indexOf('Server bumped by') != -1){
+    if(message.author.id == '315926021457051650' && message.embeds[0] && message.embeds[0].description.indexOf('Server bumped by') != -1){
         const bumper = await client.guild.members.fetch(message.embeds[0].description.slice(message.embeds[0].description.indexOf('<@') + 2, message.embeds[0].description.indexOf('<@') + 20))
 
 
