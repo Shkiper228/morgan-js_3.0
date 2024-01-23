@@ -56,11 +56,8 @@ class Morgan extends Discord.Client {
         await this.slashCommands_reload()
 		//await this.loadInfoBooks();
 		
-		//await this.regTimers();
-		//await this.regChannels();
-
-		//key channels table init
-		
+		await this.regTimers();
+		await this.regChannels();
 
 		let in_voice_counter = setInterval(async () => {
 			const channels = await this.guild.channels.fetch();
@@ -219,14 +216,10 @@ class Morgan extends Discord.Client {
                 
         		console.log(`Успішно перезавантажено ${data.length} слеш-команд.`);
         	} catch (error) {
-        		// And of course, make sure you catch and log any errors!
         		console.error(error);
         	}
         })(this);
     }
-
-
-
 
     async dbConnection () {
 
@@ -238,18 +231,6 @@ class Morgan extends Discord.Client {
 			database: process.env.DB_DATABASE != undefined ? process.env.DB_DATABASE : require('../secret.json').DB_DATABASE,
 			connectionLimit: 10
 		})
-		
-		/*await this.connection.connect(async (err) => {
-			if (err) {
-				console.error(`Підключення неуспішне ${err}`)
-			} else {
-				console.log('Підключення успішне')
-				//await this.regMembers()
-				setInterval (() => {
-					this.connection.query('SELECT 1')
-				}, 10000)
-			}
-		});*/
 	}
 
 	async regMembers () {
@@ -277,56 +258,15 @@ class Morgan extends Discord.Client {
 		})
 	}
 	
-	/*async regTimers () {
-		function getTimeOfDaysMonthYears(days, currentM, month, currentY, year) {
-			let time = days * 24 * 60 * 60;
-			const x = [
-				() => {return 31},
-				() => {return currentY % 4 == 0 ? 29 : 28},
-				() => {return 31},
-				() => {return 30},
-				() => {return 31},
-				() => {return 30},
-				() => {return 31},
-				() => {return 31},
-				() => {return 30},
-				() => {return 31},
-				() => {return 30},
-				() => {return 31}
-			]
-			
-			let y = month > 0 ? 1 : -1;
-			let m = 0;
-			//month = Math.abs(month);
-			for (; month != 0; month -= y) {
-				if (currentM + 1 > 12) {
-					currentM = 0;
-					currentY++;
-					year--;
-				}
-				time += x[currentM]() * 24 * 60 * 60 * y;
-				m++;
-				currentM++;
-			}
-
-			y = year > 0 ? 1 : -1;
-			let ye = 0;
-			for(; year != 0; year -= y) {
-				time += (currentY % 4 == 0 ? 366 : 365) * 24 * 60 * 60 * y;
-				ye++;
-				currentY += y;
-			}
-			return time;
-		}
-
+	async regTimers () {
 		this.connection.query(`CREATE TABLE IF NOT EXISTS timers ( 
 			id INT NOT NULL AUTO_INCREMENT ,
-			date_time VARCHAR(19) NOT NULL ,
+			timestamp VARCHAR(19) NOT NULL ,
             channel VARCHAR(20) NOT NULL ,
             title VARCHAR(255),
             description VARCHAR(255) ,
             sender VARCHAR(23) ,
-            color VARCHAR(6) ,
+            color INT(12) ,
 			PRIMARY KEY (id)
 			)`
 		)
@@ -335,50 +275,22 @@ class Morgan extends Discord.Client {
 			if(error) return;
 			
 			rows.forEach((timer) => {
-				
-				const current = new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' });
-				const 	currentDate = current.split(', ')[0],
-						currentTime = current.split(', ')[1]
-				
-				const 	currentYear = currentDate.split('.')[2],
-						currentMonth = currentDate.split('.')[1],
-						currentDay = currentDate.split('.')[0],
-						currentHour = currentTime.split(':')[0],
-						currentMinute = currentTime.split(':')[1],
-						currentSecond = currentTime.split(':')[2]
-				
-				
-				const date_time = `${timer.date_time}`;
-				const 	timerDate = date_time.split(' ')[0],
-						timerTime = date_time.split(' ')[1]
+				const currentTimeStamp = Date.now()
+				const targetTimeStamp = timer.timestamp
 
-				const 	timerYear = timerDate.split('.')[0],
-						timerMonth = timerDate.split('.')[1],
-						timerDay = timerDate.split('.')[2],
-						timerHour = timerTime.split(':')[0],
-						timerMinute = timerTime.split(':')[1],
-						timerSecond = timerTime.split(':')[2]
-
-				
-				const second = timerSecond - currentSecond;
-				const minute = timerMinute - currentMinute;
-				const hour = timerHour - currentHour;
-				
-				const day = timerDay - currentDay;
-				const month = timerMonth - currentMonth;
-				const year = timerYear - currentYear;
-				
-				
-				//log(`Seconds: ${second}\n Minutes: ${minute}\nHours: ${hour}\nMonth: ${month}\nYears: ${year}`, 'warning')
-				const time = second + minute * 60 + hour * 60 * 60 + getTimeOfDaysMonthYears(day, Number(currentMonth), month, Number(currentYear), year);
-
-
-
-				console.log(`Через ${time} спрацює таймер\nУ днях це ${time / 60 / 60 / 24}\nУ годинах ${time / 60 / 60}\nУ хвилинах ${time / 60}`);
-				new Timer(this, time, timer.channel, timer.title, timer.description, timer.sender, timer.color, timer.id, true);
+				new Timer(this, {
+					time: (targetTimeStamp - currentTimeStamp)/60/1000,
+					channelId: timer.channel,
+					title: timer.title,
+					description: timer.description,
+					sender: timer.sender,
+					color: timer.color,
+					id: timer.id,
+					isReg: true
+				});
 			})
 		})
-	}*/
+	}
 
 	async regChannels () {
 		this.connection.query(`CREATE TABLE IF NOT EXISTS privat_channels ( 
