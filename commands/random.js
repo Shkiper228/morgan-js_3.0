@@ -17,6 +17,6 @@ module.exports = {
             }], ephemeral: true})
             return
         }
-        await interaction.reply(min + (Math.round((Math.random() * (max - min)))))
+        await interaction.reply(`${min + (Math.round((Math.random() * (max - min))))}`)
     }
 }
