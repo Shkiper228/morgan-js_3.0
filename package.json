@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Shkiper228/morgan-js_3.0#readme",
   "dependencies": {
+    "canvas": "^2.11.2",
     "discord.js": "^14.14.1",
     "mysql": "^2.18.1"
   }
