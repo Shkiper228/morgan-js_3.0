@@ -40,7 +40,7 @@ async function bump_check(client, message) {
     
                 administrators.forEach(async role => {
                     console.log(role)
-                    role.forEach(async member => {
+                    role.members.forEach(async member => {
                         if(bumper.id != member.id) {
                             const message = await member.send({embeds: [{
                                 title: 'Пора бампити!',
