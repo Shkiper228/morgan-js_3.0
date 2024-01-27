@@ -29,6 +29,7 @@ async function bump_check(client, message) {
                 const administrators = [];
     
                 const leader = await guild.roles.fetch(client.config.leader)
+
                 const admin = await guild.roles.fetch(client.config.admin)
                 const support = await guild.roles.fetch(client.config.support)
     
@@ -38,6 +39,7 @@ async function bump_check(client, message) {
                 
     
                 administrators.forEach(async role => {
+                    console.log(role)
                     role.forEach(async member => {
                         if(bumper.id != member.id) {
                             const message = await member.send({embeds: [{
