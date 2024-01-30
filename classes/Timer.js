@@ -32,9 +32,9 @@ class Timer {
             this.targetTimeStamp = this.currentTimeStamp + this.time * 60 * 1000
             this.targetDateTimeStr = new Date(this.targetTimeStamp).toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })
 
-            console.log(`Таймстемп на даний момент --> ${this.currentTimeStamp}`)
-            console.log(`Таймстемп таймеру --> ${this.targetTimeStamp}`)
-            console.log(`Таймер спрацює: ${this.targetDateTimeStr}`)
+            //console.log(`Таймстемп на даний момент --> ${this.currentTimeStamp}`)
+            //console.log(`Таймстемп таймеру --> ${this.targetTimeStamp}`)
+            //console.log(`Таймер спрацює: ${this.targetDateTimeStr}`)
 
         if(!this.isReg) {
             const sql = `INSERT INTO timers (timestamp, channel, title, description, sender, color) VALUES(\"${this.targetTimeStamp}\", \"${this.channelId}\", \"${this.title}\", \"${this.description}\", \"${this.sender}\", ${this.color})`;
