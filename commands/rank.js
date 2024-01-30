@@ -1,9 +1,9 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const { createCanvas, loadImage } = require('canvas');
 const { fillRectRadius } = require('../utils/canvasUtils.js');
 const { cutNum } = require('../utils/stringAndNumsFormat.js');
 
-async function formatRankCard(client, canvas, member, message) {
+async function formatRankCard(client, canvas, member, interaction) {
     //initialization
     const context = canvas.getContext('2d');
     const padding = 10;
@@ -18,35 +18,20 @@ async function formatRankCard(client, canvas, member, message) {
     fillRectRadius(context, padding, padding, canvas.width - padding * 2, canvas.height - padding * 2, 8);
 
     //place and rounding avatar
-    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+    const avatar = await loadImage(member.displayAvatarURL({ extension: 'jpg' }));
     context.drawImage(avatar, padding * 2 + 5, padding * 2 + 5);
 
     //progress bar
     let expForNextLvl = 0, expForLastLvl = 0, expForNextLvlSimple = 0, exp = 0, expSimple = 0;
-    client.connection.query(`SELECT * FROM members`, async (error, rows) => {
+    client.connection.query(`SELECT * FROM members ORDER BY experience DESC`, async (error, rows) => {
         let indexAuthor;
 
-        const unsortedArr = [];
         const sortedArr = [];
 
-        rows.forEach(row => {
-            unsortedArr.push(row);
+        rows.forEach((row, index) => {
+            sortedArr.push(row);
+            if(row.id == member.id) indexAuthor = index
         })
-
-        let indexMax;
-
-        for (let i = 0; i < rows.length; i++) {
-            for (let n = 0; n < unsortedArr.length; n++) {
-                if (indexMax == undefined || unsortedArr[indexMax].experience < unsortedArr[n].experience) indexMax = n;
-            }
-
-            sortedArr.push(unsortedArr[indexMax])
-
-            if (unsortedArr[indexMax].id == member.id) indexAuthor = sortedArr.length - 1;
-
-            unsortedArr.splice(indexMax, 1);
-            indexMax = undefined;
-        }
 
         expForNextLvl = (5 * Math.pow(sortedArr[indexAuthor].level, 2)) + (50 * (sortedArr[indexAuthor].level)) + 100;
         for(let i = 0; i < sortedArr[indexAuthor].level; i++){
@@ -67,7 +52,7 @@ async function formatRankCard(client, canvas, member, message) {
         context.fillText(`${cutNum(expSimple)}/${cutNum(expForNextLvl)}`, canvas.width - padding * 2 - 145, canvas.height - padding * 2 - 5);
         context.fillStyle = "rgb(255,255,255)";
         context.font = '28px sans-serif';
-        context.fillText(`${member.user.tag}`, padding * 2 + 5, padding * 2 + avatar.height + 40);
+        context.fillText(`${member.displayName}`, padding * 2 + 5, padding * 2 + avatar.height + 40);
         context.fillStyle = "rgb(200,200,200)";
         context.font = '27px sans-serif';
         context.fillText('Ваш рейтинг:', padding * 2 + 5 + avatar.width + 15, padding * 2 + 28);
@@ -89,50 +74,32 @@ async function formatRankCard(client, canvas, member, message) {
         context.fillText(`В голосових: ${cutNum(sortedArr[indexAuthor].in_voice)} хв.`, padding * 2 + 5 + avatar.width + 150, padding * 2 + 130)
 
         //format message
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
-        await message.channel.send({
-            files: [attachment]
-        })
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), 'profile-image.png');
+        await interaction.reply({files: [attachment]})
     })
 }
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rank')
-        .setDescription('Генерує особисту інформаційну картку'),
+        .setDescription('Генерує особисту інформаційну картку')
+        .addUserOption(option => option.setName('учасник').setDescription('Учасник, інформаційну картку якого ви хочете згенерувати')),
     async execute(client, interaction) {
-        
-        let id;
+        if(interaction.options.getUser('учасник') && interaction.options.getUser('учасник').bot) {
+            interaction.reply({embeds: [{
+                description: `Обраний вами учасник - бот. А в бездушних машин немає рівнів...`,
+                color: 0xFF033E
+            }], ephemeral: true})
+            return
+        }
         let member;
-        if (!args[0]) {
-            member = await client.guild.members.fetch(message.author.id);
-
+        if (interaction.options.getUser('учасник')) {
+            member = interaction.options.getUser('учасник');
         } else {
-            if(args[0].indexOf('<@') != -1) {
-                log(args[0].indexOf('<@'))
-                id = args[0].slice(2, args[0].length - 1)
-                log(id);
-            } else {
-                id = args[0];
-            }
-            try {
-                member = await client.guild.members.fetch(id);
-                if(member.user.bot) {
-                    new ErroAlarm ({
-                        description: `${message.author} не можна генерувати картку рейтингу для ботів, так як їх досвід не фіксується в базі даних`, 
-                        channel: message.channel
-                    })
-                    return;
-                }
-            } catch (error) {
-                new ErroAlarm({
-                    description: `${message.author} на жаль такого користувача немає на цьому сервері`,
-                    channel: message.channel
-                })
-                return;
-            }
+            
+            member = interaction.member
         }
         const canvas = createCanvas(640, 240)
-        formatRankCard(client, canvas, member, message);
+        formatRankCard(client, canvas, member, interaction);
     }
 }
