@@ -28,7 +28,7 @@ module.exports = {
             return interaction.followUp(`\`${track.title}\` закинуто в чергу`)
         } catch (e) {
             await interaction.followUp({embeds: [{
-                description: `**Халепа, щось пішло не так Помилка:**\n${e}`,
+                description: `**Халепа, щось пішло не так \nПомилка:**\n${e}`,
                 color: 0xFF033E
             }], ephemeral: true})
         }
