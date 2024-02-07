@@ -17,8 +17,12 @@
   },
   "homepage": "https://github.com/Shkiper228/morgan-js_3.0#readme",
   "dependencies": {
+    "@discord-player/extractor": "^4.4.6",
     "canvas": "^2.11.2",
+    "discord-player": "^6.6.7",
     "discord.js": "^14.14.1",
-    "mysql": "^2.18.1"
+    "mediaplex": "^0.0.9",
+    "mysql": "^2.18.1",
+    "youtube-ext": "^1.1.16"
   }
 }
