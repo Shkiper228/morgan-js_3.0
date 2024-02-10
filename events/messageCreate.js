@@ -82,6 +82,16 @@ async function updateXP(client, message, member) {
     
 }
 
+async function checkMoskowWords(client, message, member) {
+    if(member.roles.highest.id == client.config.junior && (message.content.toLowerCase().indexOf('ё') != -1 || message.content.toLowerCase().indexOf('ъ') != -1 || message.content.toLowerCase().indexOf('ы') != -1 || message.content.toLowerCase().indexOf('э') != -1)) {
+        try {
+            member.send('Було замічено, що ви спілкувались на сервері \`Weisttil\` російською мовою. Радимо вам перейти на українську, адже російськомовних на сервері здебільшого банять або просто презирають')
+        } catch (error) {
+            client.owner.send(`У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською\nЯ намагався попередити його, проте виникла наступна помилка:\n${error}`)
+        }
+    }
+} 
+
 async function random_emojis (client, message) {
     if(!message.guild.emojis.cache) {
         console.warn('На сервері немає жодного власного емодзі')
@@ -130,6 +140,8 @@ const messageCreate = {
         const member = await client.guild.members.fetch(message.author.id)
 
         await updateXP(client, message, member)
+
+        await checkMoskowWords(client, message, member)
 
         await random_emojis(client, message)
 

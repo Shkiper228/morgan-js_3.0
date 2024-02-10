@@ -21,6 +21,7 @@ class Morgan extends Discord.Client {
 				GatewayIntentBits.GuildVoiceStates,
 				GatewayIntentBits.DirectMessages,
 				GatewayIntentBits.GuildScheduledEvents,
+				GatewayIntentBits.MessageContent,
 			],
 			allowedMentions: {
 				parse: ["users"]
