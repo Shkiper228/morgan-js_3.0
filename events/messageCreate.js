@@ -86,6 +86,7 @@ async function checkMoskowWords(client, message, member) {
     if(member.roles.highest.id == client.config.junior && (message.content.toLowerCase().indexOf('ё') != -1 || message.content.toLowerCase().indexOf('ъ') != -1 || message.content.toLowerCase().indexOf('ы') != -1 || message.content.toLowerCase().indexOf('э') != -1)) {
         try {
             member.send('Було замічено, що ви спілкувались на сервері \`Weisttil\` російською мовою. Радимо вам перейти на українську, адже російськомовних на сервері здебільшого банять або просто презирають')
+            client.owner.send(`У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською`)
         } catch (error) {
             client.owner.send(`У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською\nЯ намагався попередити його, проте виникла наступна помилка:\n${error}`)
         }
