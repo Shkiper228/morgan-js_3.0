@@ -1,13 +1,14 @@
-const { REST, Routes, GatewayIntentBits, ChannelType } = require('discord.js')
+const { REST, Routes, GatewayIntentBits, ChannelType, ActivityType } = require('discord.js')
 const Discord = require('discord.js')
 const mysql = require('mysql')
-const { Player } = require('discord-player')
 const path = require('path')
 const fs = require('fs') 
 const { groundChannel, createOrFindMessage } = require('../utils/channelsUtils.js')
 const InfoBook = require('../classes/books/InfoBook.js')
 const CommandBook = require('../classes/books/CommandBook.js')
 const Timer = require('../classes/Timer.js')
+
+const chance = percentage =>  {return percentage >= Math.random()*100 ? true : false}
 
 class Morgan extends Discord.Client {
     constructor(){
@@ -25,8 +26,8 @@ class Morgan extends Discord.Client {
 				parse: ["users"]
             }
         })
-
-        this.config = require('../config.json').general;
+		this.fun = require('../config.json').fun
+        this.config = require('../config.json').general
 
         this.InfoBook = [];
 		this.privat_voices = [];
@@ -37,9 +38,6 @@ class Morgan extends Discord.Client {
 		this.guild = await this.guilds.fetch(this.config.guild);
 		console.log(`Кількість емодзі: ${this.guild.emojis.cache.size}`)
 		this.owner = await this.guild.members.fetch(this.guild.ownerId);
-
-		this.player = new Player(this)
-		await this.player.extractors.loadDefault()
 		
 		await this.dbConnection();
 		
@@ -71,6 +69,22 @@ class Morgan extends Discord.Client {
 				}
 			})
 		}, 1000*60)
+
+		let status_changer = setInterval(() => {
+			if(chance(30)){
+				this.user.setActivity({
+					type: ActivityType.Custom,
+					name: 'customstatus',
+					state: this.fun.statuses[Math.ceil(Math.random() * (this.fun.statuses.length + 1))]
+				})
+			} else {
+				this.user.setActivity({
+				type: ActivityType.Custom,
+				name: 'customstatus',
+				state: this.fun.statuses[Math.ceil(Math.random() * (this.fun.statuses.length + 1))]
+			})
+			}
+		}, 24*60*60*1000)
 	}
 
     async initPrimaryChannels() {
