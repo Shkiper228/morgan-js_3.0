@@ -33,6 +33,8 @@ async function formatRankCard(client, canvas, member, interaction) {
             if(row.id == member.id) indexAuthor = index
         })
 
+        console.log(sortedArr[indexAuthor])
+
         expForNextLvl = (5 * Math.pow(sortedArr[indexAuthor].level, 2)) + (50 * (sortedArr[indexAuthor].level)) + 100;
         for(let i = 0; i < sortedArr[indexAuthor].level; i++){
             expForLastLvl += (5 * Math.pow(i, 2)) + (50 * i) + 100;

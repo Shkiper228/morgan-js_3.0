@@ -41,21 +41,10 @@ class Morgan extends Discord.Client {
 		this.owner = await this.guild.members.fetch(this.guild.ownerId);
 		
 		await this.dbConnection();
-		
-		this.connection.query(`CREATE TABLE IF NOT EXISTS key_channels ( 
-			id VARCHAR(20) NOT NULL ,
-			type VARCHAR(50) ,
-			PRIMARY KEY (ID)
-			)`
-		)
-
-
-		
 		await this.loadCommands();
 		await this.loadEvents();
 		await this.initPrimaryChannels();
         await this.slashCommands_reload()
-		//await this.loadInfoBooks();
 		
 		await this.regTimers();
 		await this.regChannels();
@@ -191,21 +180,19 @@ class Morgan extends Discord.Client {
         console.log(`Установлено ${eventFiles.length} подій`)
 	}
 
-    async loadInfoBooks () {
-		this.infoBooks = [];
+    async loadInfo () {
+		if(this.GuildInfo) return this.owner.send('На сервері не визначено спеціального каналу для інформаційного табло\nСкористайтесь командою \`/setchannel info\`')
+
 		const channels = this.guild.channels.cache;
-		const infoBooksPath = path.join(__dirname, '../infoBooks')
+		const infoPath = path.join(__dirname, '../info')
 
-
-		fs.readdirSync(infoBooksPath).forEach(folder => {
-			const book = new InfoBook({
-				client: this,
-				folder_path: `infoBooks/${folder.toString()}`,
-				channel: this.GuildInfo,
-			})
-
-			book.start();
+		const book = new InfoBook({
+			client: this,
+			folder_path: infoPath,
+			channel: this.GuildInfo,
 		})
+
+		book.start();
 	}
 
     async slashCommands_reload(){
@@ -248,6 +235,13 @@ class Morgan extends Discord.Client {
 			database: process.env.DB_DATABASE != undefined ? process.env.DB_DATABASE : require('../secret.json').DB_DATABASE,
 			connectionLimit: 10
 		})
+
+		this.connection.query(`CREATE TABLE IF NOT EXISTS key_channels ( 
+			id VARCHAR(20) NOT NULL ,
+			type VARCHAR(50) ,
+			PRIMARY KEY (ID)
+			)`
+		)
 	}
 
 	async regMembers () {

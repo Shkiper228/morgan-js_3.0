@@ -20,7 +20,7 @@ class InfoBook extends Book {
         }
 
         //формування сторінок
-        fs.readdirSync(`books/${folder_path}`).forEach((file, index) => {
+        fs.readdirSync(folder_path).forEach((file, index) => {
             this.files.push(file.toString());
             this.pages.push([]);
 
