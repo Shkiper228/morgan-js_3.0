@@ -2,8 +2,9 @@ const { Events } = require('discord.js');
 
 const error = {
     name: Events.Error,
-    execute: async (client) => {
-        console.error('WebSocket виявив помилку:', error)
+    execute: async (client, error) => {
+        console.error('WebSocket виявив помилку:')
+        console.log(error)
     }
 }
 

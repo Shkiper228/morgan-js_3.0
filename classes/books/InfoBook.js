@@ -1,5 +1,4 @@
 const Book = require('./Book.js');
-const {MessageEmbed} = require('discord.js');
 const path_lib = require('path');
 const fs = require('fs');
 const { groundChannel, createOrFindMessage } = require('../../utils/channelsUtils.js')
@@ -24,7 +23,7 @@ class InfoBook extends Book {
             this.files.push(file.toString());
             this.pages.push([]);
 
-            const strs = fs.readFileSync(`books/${folder_path}/${file.toString()}`).toString().split('\n');
+            const strs = fs.readFileSync(`${folder_path}/${file.toString()}`).toString().split('\n');
             
             this.pages[this.pages.length - 1].push(`${this.emojis[this.pages.length - 1]}**${this.files[index].slice(2, -4)}**\n`)
             strs.forEach(stroke => {
@@ -52,7 +51,7 @@ class InfoBook extends Book {
             title: 'Інформація',
             description: this.contentPage
         }]}, 2)
-        this.client.infoBooks.push(this);
+        this.client.infoBook = this;
         //формування змістової сторінки
         for(let i = 0; i < this.files.length; i++){
             this.contentPage += `${this.emojis[i]} - ${this.files[i].slice(2, this.files[i].length - 4)}\n`
@@ -76,21 +75,21 @@ class InfoBook extends Book {
                     description: this.contentPage
                 }]});
             } else {
-                const embed = new MessageEmbed({
-                    title: 'Інформація',
-                })
                 //console.log(this.pages[pageNumber])
                 let str = '';
                 this.pages[pageNumber].forEach(page => {
                     str += '\n';
                     str += page;
                 })
-                embed.addFields({ 
-                    name: '_-||-_',
-                    value: str
-                });
 
-                this.message.edit({embeds: [embed]});
+
+                this.message.edit({embeds: [{
+                    title: 'Інформація',
+                    fields: [{
+                        name: '_-||-_',
+                        value: str
+                    }]
+                }]});
             }
 
             this.currentPage = pageNumber;

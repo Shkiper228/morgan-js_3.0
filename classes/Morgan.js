@@ -45,6 +45,7 @@ class Morgan extends Discord.Client {
 		await this.loadEvents();
 		await this.initPrimaryChannels();
         await this.slashCommands_reload()
+		await this.loadInfo()
 		
 		await this.regTimers();
 		await this.regChannels();
@@ -181,7 +182,7 @@ class Morgan extends Discord.Client {
 	}
 
     async loadInfo () {
-		if(this.GuildInfo) return this.owner.send('На сервері не визначено спеціального каналу для інформаційного табло\nСкористайтесь командою \`/setchannel info\`')
+		if(!this.GuildInfo) return this.owner.send('На сервері не визначено спеціального каналу для інформаційного табло\nСкористайтесь командою \`/setchannel info\`')
 
 		const channels = this.guild.channels.cache;
 		const infoPath = path.join(__dirname, '../info')
