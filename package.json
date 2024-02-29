@@ -19,6 +19,8 @@
   "dependencies": {
     "canvas": "^2.11.2",
     "discord.js": "^14.14.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "pseudo-random": "^0.6.0",
+    "seedrandom": "^3.0.5"
   }
 }
