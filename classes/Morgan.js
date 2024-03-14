@@ -62,19 +62,11 @@ class Morgan extends Discord.Client {
 		}, 1000*60)
 
 		let status_changer = setInterval(() => {
-			if(chance(30)){
-				this.user.setActivity({
-					type: ActivityType.Custom,
-					name: 'customstatus',
-					state: ''
-				})
-			} else {
-				this.user.setActivity({
+			this.user.setActivity({
 				type: ActivityType.Custom,
 				name: 'customstatus',
 				state: this.fun.statuses[Math.ceil(Math.random() * (this.fun.statuses.length + 1))]
 			})
-			}
 		}, 24*60*60*1000)
 	}
 

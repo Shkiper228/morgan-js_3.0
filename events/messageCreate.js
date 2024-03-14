@@ -100,12 +100,10 @@ async function checkMoskowWords(client, message, member) {
 
             administrators.forEach(async role => {
                 role.members.forEach(async member => {
-                    if(bumper.id != member.id) {
-                        const message = await member.send({embeds: [{
-                            title: 'Рускоговорящій детектед!',
-                            description: `У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською`
-                        }]}).catch (e => log(`Не вийшло написати --> ${member.nickname}`, 'error'))
-                    }
+                    const message = await member.send({embeds: [{
+                        title: 'Рускоговорящій детектед!',
+                        description: `У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською`
+                    }]}).catch (e => log(`Не вийшло написати --> ${member.nickname}`, 'error'))
                 })
             })
         } catch (error) {
