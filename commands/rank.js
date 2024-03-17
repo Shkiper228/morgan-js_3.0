@@ -1,21 +1,17 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const { createCanvas, loadImage } = require('canvas');
-const { fillRectRadius } = require('../utils/canvasUtils.js');
 const { cutNum } = require('../utils/stringAndNumsFormat.js');
 
 async function formatRankCard(client, canvas, member, interaction) {
+    await interaction.deferReply({ ephemeral: true });
+
     //initialization
     const context = canvas.getContext('2d');
-    const padding = 10;
-    
 
     //background
     const background = await loadImage("./assets/images/rank_card_background.png")
     context.drawImage(background, 0, 0);
 
-    //place and rounding avatar
-    const avatar = await loadImage(member.displayAvatarURL({ extension: 'jpg' }));
-    context.drawImage(avatar, padding * 2 + 5, padding * 2 + 5);
 
     //progress bar
     let expForNextLvl = 0, expForLastLvl = 0, expForNextLvlSimple = 0, exp = 0, expSimple = 0;
@@ -38,42 +34,65 @@ async function formatRankCard(client, canvas, member, interaction) {
 
         exp = sortedArr[indexAuthor].experience;
         expSimple = exp - expForLastLvl;
-            
-        context.fillStyle = "rgb(80, 200, 120)";
-        for(let i = 0; i < 18; i++) {
-            if((expForNextLvl / 18) * i > expSimple) context.fillStyle = "rgb(37,37,37)";
-            context.fillRect(padding * 2 + i * 25, canvas.height - 38, 20, 20);
+
+        const circle = {
+            x: canvas.height*0.75*0.5 + canvas.height / 20,
+            y: canvas.height*0.75*0.5 + canvas.height / 20,
+            radius: canvas.height*0.75*0.5,
         }
+        context.fillStyle = "rgb(227,212,44)";
+        context.font = '68px sans-serif';
+        context.fillText(`${member.displayName}`, circle.x * 2, 78);
+        
+        context.fillStyle = "rgb(227,212,44)";
+        context.font = '66px sans-serif';
+        context.fillText(`Рівень: ${cutNum(sortedArr[indexAuthor].level)}`, circle.x * 2, 78 + 71)
+        context.fillText(`Рейтинг: #${cutNum(indexAuthor + 1)}`, circle.x * 2, 78 + 71 * 2);
+        context.fillText(`Повідомлень: ${cutNum(sortedArr[indexAuthor].messages)}`, circle.x * 2, 78 + 71 * 3)
+        context.fillText(`В голосових: ${cutNum(sortedArr[indexAuthor].in_voice)} хв.`, circle.x * 2, 78 + 71 * 4)
 
-        context.font = '25px sans-serif';
-        context.fillStyle = "rgb(200,200,200)";
-        context.fillText(`${cutNum(expSimple)}/${cutNum(expForNextLvl)}`, canvas.width - padding * 2 - 145, canvas.height - padding * 2 - 5);
-        context.fillStyle = "rgb(255,255,255)";
-        context.font = '28px sans-serif';
-        context.fillText(`${member.displayName}`, padding * 2 + 5, padding * 2 + avatar.height + 40);
-        context.fillStyle = "rgb(200,200,200)";
-        context.font = '27px sans-serif';
-        context.fillText('Ваш рейтинг:', padding * 2 + 5 + avatar.width + 15, padding * 2 + 28);
-        context.fillStyle = "rgb(255,255,255)";
-        context.font = '36px sans-serif';
-        context.fillText(`#${cutNum(indexAuthor + 1)}`, padding * 2 + 5 + avatar.width + 212, padding * 2 + 26);
+        context.font = '44px sans-serif';
+        context.fillText(`${cutNum(expSimple)}/${cutNum(expForNextLvl)}`, canvas.width - 300, 78 + 71 * 4);
 
-        context.fillStyle = "rgb(200,200,200)";
-        context.font = '27px sans-serif';
-        context.fillText('Рівень: ', padding * 2 + 5 + avatar.width + 300, padding * 2 + 28)
-        context.fillStyle = "rgb(255,255,255)";
-        context.font = '36px sans-serif';
-        context.fillText(`${cutNum(sortedArr[indexAuthor].level)}`, padding * 2 + 5 + avatar.width + 405, padding * 2 + 26)
+        context.fillStyle = "rgb(78,68,136)";
+        context.fillRect(canvas.width/30, circle.x * 2 + 10, canvas.width - 2*canvas.width/30, (canvas.height - (circle.x + circle.radius))*0.3)
+        context.fillStyle = "rgb(227,212,44)";
+        context.fillRect(canvas.width/30, circle.x * 2 + 10, (canvas.width - 2*canvas.width/30) * (expSimple/expForNextLvl), (canvas.height - (circle.x + circle.radius))*0.3)
+        
+        
+        
+        
+        context.fillStyle = "rgb(227,212,44)";
+        context.font = '92px sans-serif';
+        //context.fillText(`#${cutNum(indexAuthor + 1)}`, padding * 2 + 5 + circle.radius * 2 + 212, padding * 2 + 26);
 
-        context.fillStyle = "rgb(200,200,200)";
-        context.font = '23px sans-serif';
-        context.fillText(`Досвід: ${cutNum(sortedArr[indexAuthor].experience)}`, padding * 2 + 5 + avatar.width + 15, padding * 2 + 75)
-        context.fillText(`Повідомлення: ${cutNum(sortedArr[indexAuthor].messages)}`, padding * 2 + 5 + avatar.width + 200, padding * 2 + 80)
-        context.fillText(`В голосових: ${cutNum(sortedArr[indexAuthor].in_voice)} хв.`, padding * 2 + 5 + avatar.width + 150, padding * 2 + 130)
+        
+        
+
+        context.fillStyle = "rgb(227,212,44)";
+        context.font = '64px sans-serif';
+        //context.fillText(`Досвід: ${cutNum(sortedArr[indexAuthor].experience)}`, padding * 2 + 5 + circle.radius * 2 + 15, padding * 2 + 75)
+
+        //place and rounding avatar
+        context.beginPath();
+        context.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
+        context.closePath();
+        context.clip();
+
+        const avatar = await loadImage(member.displayAvatarURL({ extension: 'jpg' }));
+
+
+        // Compute aspectration
+        const aspect = avatar.height / avatar.width;
+        // Math.max is ued to have cover effect use Math.min for contain
+        const hsx = circle.radius * Math.max(1.0 / aspect, 1.0);
+        const hsy = circle.radius * Math.max(aspect, 1.0);
+        // x - hsl and y - hsy centers the image
+        context.drawImage(avatar,circle.x - hsx,circle.y - hsy,hsx * 2,hsy * 2);
 
         //format message
         const attachment = new AttachmentBuilder(canvas.toBuffer(), 'profile-image.png');
-        await interaction.reply({files: [attachment]})
+        await interaction.editReply({files: [attachment]})
     })
 }
 
@@ -83,7 +102,6 @@ module.exports = {
         .setDescription('Генерує особисту інформаційну картку')
         .addUserOption(option => option.setName('учасник').setDescription('Учасник, інформаційну картку якого ви хочете згенерувати')),
     async execute(client, interaction) {
-        return;
         if(interaction.options.getUser('учасник') && interaction.options.getUser('учасник').bot) {
             interaction.reply({embeds: [{
                 description: `Обраний вами учасник - бот. А в бездушних машин немає рівнів...`,
