@@ -10,12 +10,8 @@ async function formatRankCard(client, canvas, member, interaction) {
     
 
     //background
-    context.fillStyle = "rgb(30,40,73)";1E2849
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    //rounded rect
-    context.fillStyle = "rgb(32,78,166)";
-    fillRectRadius(context, padding, padding, canvas.width - padding * 2, canvas.height - padding * 2, 8);
+    const background = await loadImage("./assets/images/rank_card_background.png")
+    context.drawImage(background, 0, 0);
 
     //place and rounding avatar
     const avatar = await loadImage(member.displayAvatarURL({ extension: 'jpg' }));
@@ -87,6 +83,7 @@ module.exports = {
         .setDescription('Генерує особисту інформаційну картку')
         .addUserOption(option => option.setName('учасник').setDescription('Учасник, інформаційну картку якого ви хочете згенерувати')),
     async execute(client, interaction) {
+        return;
         if(interaction.options.getUser('учасник') && interaction.options.getUser('учасник').bot) {
             interaction.reply({embeds: [{
                 description: `Обраний вами учасник - бот. А в бездушних машин немає рівнів...`,
@@ -101,7 +98,7 @@ module.exports = {
             
             member = interaction.member
         }
-        const canvas = createCanvas(640, 240)
+        const canvas = createCanvas(1639, 457)
         formatRankCard(client, canvas, member, interaction);
     }
 }
