@@ -3,7 +3,7 @@ const { createCanvas, loadImage } = require('canvas');
 const { cutNum } = require('../utils/stringAndNumsFormat.js');
 
 async function formatRankCard(client, canvas, member, interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: false });
 
     //initialization
     const context = canvas.getContext('2d');
