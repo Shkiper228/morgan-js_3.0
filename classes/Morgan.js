@@ -46,7 +46,9 @@ class Morgan extends Discord.Client {
 		await this.initPrimaryChannels();
         await this.slashCommands_reload()
 		await this.loadInfo()
-		
+
+
+		await this.regMembers();
 		await this.regTimers();
 		await this.regChannels();
 
@@ -256,12 +258,14 @@ class Morgan extends Discord.Client {
 		members.forEach(member => {
 			if(!member.user.bot) {
 				this.connection.query(`SELECT * FROM members WHERE id = ${member.id}`, (error, rows) => {
-					if(rows) return;
-					this.connection.query(`INSERT INTO members (id) VALUES(${member.id})`, err => {
-						if(err) {
-							console.error('Трапилась помилка під час запису мембера до бази даних')
-						}
-					})
+					if(rows[0]) {return} else {
+						this.connection.query(`INSERT INTO members (id) VALUES(${member.id})`, err => {
+							if(err) {
+								console.error('Трапилась помилка під час запису мембера до бази даних')
+							}
+						})
+					}
+					
 				})
 			}
 		})

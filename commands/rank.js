@@ -3,29 +3,30 @@ const { createCanvas, loadImage } = require('canvas');
 const { cutNum } = require('../utils/stringAndNumsFormat.js');
 
 async function formatRankCard(client, canvas, member, interaction) {
-    await interaction.deferReply({ ephemeral: false });
-
-    //initialization
-    const context = canvas.getContext('2d');
-
-    //background
-    const background = await loadImage("./assets/images/rank_card_background.png")
-    context.drawImage(background, 0, 0);
+    
 
 
     //progress bar
     let expForNextLvl = 0, expForLastLvl = 0, expForNextLvlSimple = 0, exp = 0, expSimple = 0;
     client.connection.query(`SELECT * FROM members ORDER BY experience DESC`, async (error, rows) => {
+        await interaction.deferReply({ ephemeral: false });
+
+        //initialization
+        const context = canvas.getContext('2d');
+
+        //background
+        const background = await loadImage("./assets/images/rank_card_background.png")
+        context.drawImage(background, 0, 0);
         let indexAuthor;
 
         const sortedArr = [];
 
         rows.forEach((row, index) => {
             sortedArr.push(row);
-            if(row.id == member.id) indexAuthor = index
+            if(row.id == member.id) {
+                indexAuthor = index
+            }
         })
-
-        console.log(sortedArr[indexAuthor])
 
         expForNextLvl = (5 * Math.pow(sortedArr[indexAuthor].level, 2)) + (50 * (sortedArr[indexAuthor].level)) + 100;
         for(let i = 0; i < sortedArr[indexAuthor].level; i++){
