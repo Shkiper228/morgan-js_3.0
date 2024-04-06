@@ -258,7 +258,7 @@ class Morgan extends Discord.Client {
 		members.forEach(member => {
 			if(!member.user.bot) {
 				this.connection.query(`SELECT * FROM members WHERE id = ${member.id}`, (error, rows) => {
-					if(rows[0]) {return} else {
+					if(rows) {return} else {
 						this.connection.query(`INSERT INTO members (id) VALUES(${member.id})`, err => {
 							if(err) {
 								console.error('Трапилась помилка під час запису мембера до бази даних')

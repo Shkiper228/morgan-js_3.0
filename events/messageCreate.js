@@ -84,31 +84,36 @@ async function updateXP(client, message, member) {
 
 async function checkMoskowWords(client, message, member) {
     if(member.roles.highest.id == client.config.junior && (message.content.toLowerCase().indexOf('ё') != -1 || message.content.toLowerCase().indexOf('ъ') != -1 || message.content.toLowerCase().indexOf('ы') != -1 || message.content.toLowerCase().indexOf('э') != -1)) {
+        
         try {
-            member.send('Було замічено, що ви спілкувались на сервері \`Weisttil\` російською мовою. Радимо вам перейти на українську, адже російськомовних на сервері здебільшого банять або просто презирають')
-            const guild = message.guild
-            const administrators = [];
-
-            const leader = await guild.roles.fetch(client.config.leader)
-            const admin = await guild.roles.fetch(client.config.admin)
-            const support = await guild.roles.fetch(client.config.support)
-
-            administrators.push(leader)
-            administrators.push(admin)
-            administrators.push(support)
-            
-
-            administrators.forEach(async role => {
-                role.members.forEach(async member => {
-                    const message = await member.send({embeds: [{
-                        title: 'Рускоговорящій детектед!',
-                        description: `У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською`
-                    }]}).catch (e => log(`Не вийшло написати --> ${member.nickname}`, 'error'))
-                })
-            })
+            const time = 1000*60*30
+            member.timeout(time).catch(() => {console.warn(`Користувач ${member.user.username} писав російською мовою. Я намагався його замютити, проте в мене нема достатньо дозвілів`)})
+            member.send(`Було замічено, що ви спілкувались на сервері \`Weisttil\` російською мовою.\nТож, вас було замютено на ${time/1000/60} хвилин. Якщо вас було покарано випадково - зв\'яжіться з лідером сервера\nРадимо вам перейти на українську, адже російськомовних на сервері здебільшого банять або просто презирають.`)
         } catch (error) {
-            client.owner.send(`У каналі \`${message.channel.name}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською\nЯ намагався попередити його, проте виникла наступна помилка:\n${error}`)
+            client.owner.send(`У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською\nЯ намагався попередити його, проте виникла наступна помилка:\n${error}`)
         }
+        const guild = message.guild
+        const administrators = [];
+        const leader = await guild.roles.fetch(client.config.leader)
+        const admin = await guild.roles.fetch(client.config.admin)
+        const support = await guild.roles.fetch(client.config.support)
+        administrators.push(leader)
+        administrators.push(admin)
+        administrators.push(support)
+        
+        administrators.forEach(async role => {
+            let mess = message
+            role.members.forEach(async member => {
+                
+                await member.send({embeds: [{
+                    title: 'Рускоговорящій детектед!',
+                    description: `У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи.\nОсь що він написав: \n\t${mess.content}\n Мабуть, він спілкувався російською`
+                }]}).catch (e => console.log(`Не вийшло написати --> ${member.nickname}\nПомилка: ${e}`))
+            })
+        })
+        console.log(`У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи.\nОсь що він написав: \n\t${message.content}\n Мабуть, він спілкувався російською`)
+
+        setTimeout(() => {message.delete().catch(() => {console.warn('Чомусь повідомлення не вдалось видалити')})}, 1000)
     }
 } 
 
