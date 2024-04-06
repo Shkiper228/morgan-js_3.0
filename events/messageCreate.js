@@ -87,10 +87,10 @@ async function checkMoskowWords(client, message, member) {
         
         try {
             const time = 1000*60*30
-            member.timeout(time).catch(() => {console.warn(`Користувач ${member.user.username} писав російською мовою. Я намагався його замютити, проте в мене нема достатньо дозвілів`)})
+            member.timeout(time, 'Писав(-ла) російською').catch(() => {console.warn(`Користувач **${member.user.username}** писав російською мовою. Я намагався його замютити, проте в мене нема достатньо дозвілів`)})
             member.send(`Було замічено, що ви спілкувались на сервері \`Weisttil\` російською мовою.\nТож, вас було замютено на ${time/1000/60} хвилин. Якщо вас було покарано випадково - зв\'яжіться з лідером сервера\nРадимо вам перейти на українську, адже російськомовних на сервері здебільшого банять або просто презирають.`)
         } catch (error) {
-            client.owner.send(`У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи. Мабуть, він спілкувався російською\nЯ намагався попередити його, проте виникла наступна помилка:\n${error}`)
+            client.owner.send(`У каналі **\`${message.channel.name ? message.channel.name : 'Невідомо'}\`** користувач **\`${member.user.username}\`** використовував російські символи. Мабуть, він спілкувався російською\nЯ намагався попередити його, проте виникла наступна помилка:\n${error}`)
         }
         const guild = message.guild
         const administrators = [];
@@ -107,11 +107,11 @@ async function checkMoskowWords(client, message, member) {
                 
                 await adm.send({embeds: [{
                     title: 'Рускоговорящій детектед!',
-                    description: `У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи.\nОсь що він написав: \n\t${mess.content}\n Мабуть, він спілкувався російською`
+                    description: `У каналі **\`${message.channel.name ? message.channel.name : 'Невідомо'}\`** користувач **\`${member.user.username}\`** використовував російські символи.\nОсь що він написав: \n\t${mess.content}\n Мабуть, він спілкувався російською`
                 }]}).catch (e => console.log(`Не вийшло написати --> ${member.nickname}\nПомилка: ${e}`))
             })
         })
-        console.log(`У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи.\nОсь що він написав: \n\t${message.content}\n Мабуть, він спілкувався російською`)
+        console.log(`У каналі **\`${message.channel.name ? message.channel.name : 'Невідомо'}\`** користувач **\`${member.user.username}\`** використовував російські символи.\nОсь що він написав: \n\t${message.content}\n Мабуть, він спілкувався російською`)
 
         setTimeout(() => {message.delete().catch(() => {console.warn('Чомусь повідомлення не вдалось видалити')})}, 1000)
     }
