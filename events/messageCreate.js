@@ -103,9 +103,9 @@ async function checkMoskowWords(client, message, member) {
         
         administrators.forEach(async role => {
             let mess = message
-            role.members.forEach(async member => {
+            role.members.forEach(async adm => {
                 
-                await member.send({embeds: [{
+                await adm.send({embeds: [{
                     title: 'Рускоговорящій детектед!',
                     description: `У каналі \`${message.channel.name ? message.channel.name : 'Невідомо'}\` користувач \`${member.user.username}\` використовував російські символи.\nОсь що він написав: \n\t${mess.content}\n Мабуть, він спілкувався російською`
                 }]}).catch (e => console.log(`Не вийшло написати --> ${member.nickname}\nПомилка: ${e}`))
