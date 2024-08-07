@@ -15,5 +15,4 @@ module.exports = {
 
         await interaction.message.channel.bulkDelete(amount)
     }
-
 }

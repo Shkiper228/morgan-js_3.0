@@ -13,7 +13,6 @@ class InfoBook extends Book {
         this.name = path_lib.basename(folder_path);
         this.pages = [];
         this.files = [];
-        this.contentPage = '\t**ЗМІСТ**\n0️⃣ - Зміст\n';
         if(!this.emojis) {
             this.emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '0️⃣'];
         }
@@ -40,7 +39,8 @@ class InfoBook extends Book {
         if(!this.channel) {
             this.channel = await groundChannel(this.client, this.name.toString().replace(' ', '-'));
             this.channel_id = this.channel.id
-        } 
+        }
+        this.contentPage = `\t**ЗМІСТ**\n${this.emojis[this.emojis.length-1]} - Зміст\n`;
         /*this.channel.permissionOverwrites.create(this.client.guild.roles.everyone, {
 			'VIEW_CHANNEL': true,
 			'SEND_MESSAGES': false,
@@ -49,6 +49,7 @@ class InfoBook extends Book {
 
         this.message = await createOrFindMessage(this.client, this.channel, {embeds: [{
             title: 'Інформація',
+            color: 0x004B4B,
             description: this.contentPage
         }]}, 2)
         this.client.infoBook = this;
